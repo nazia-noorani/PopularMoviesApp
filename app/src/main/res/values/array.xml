@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="listentries">
+        <item>Sort by Popularity</item>
+        <item>Sort by Ratings</item>
+        <item>Favourite List</item>
+    </string-array>
+    <string-array name="listvalues">
+        <item>popularity</item>
+        <item>rating</item>
+        <item>favouriteList</item>
+    </string-array>
+</resources>

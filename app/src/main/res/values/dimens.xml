@@ -1,0 +1,16 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="cardview_corner_radius">4dp</dimen>
+    <dimen name="card_view_margin">5dp</dimen>
+    <dimen name="elevation">4dp</dimen>
+    <dimen name="recycler_view_margin_top">65dp</dimen>
+    <dimen name="tv_title_height">100dp</dimen>
+    <dimen name="tv_title_text_size">25sp</dimen>
+    <dimen name="margin_top">10dp</dimen>
+    <dimen name="margin">10dp</dimen>
+    <dimen name="tv_releaseDate_textSize">15sp</dimen>
+    <dimen name="tv_content_margin">25dp</dimen>
+    <dimen name="tv_author_textSize">20sp</dimen>
+</resources>

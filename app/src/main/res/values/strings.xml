@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Popular Movies App</string>
+    <string name="action_settings">Settings</string>
+    <string name="pref_list">PREF_LIST</string>
+    <string name="popularity">popularity</string>
+    <string name="rating">rating</string>
+    <string name="fav_list">favouriteList</string>
+    <string name="loading">Loading...</string>
+    <string name="base_url">http://api.themoviedb.org/3/movie/</string>
+    <string name="url_popular">http://api.themoviedb.org/3/movie/popular?api_key=</string>
+    <string name="url_ratings">http://api.themoviedb.org/3/movie/top_rated?api_key=</string>
+    <string name="image_constant">http://image.tmdb.org/t/p/</string>
+    <string name="poster_path">poster_path</string>
+    <string name="vote_average">vote_average</string>
+    <string name="release_date">release_date</string>
+    <string name="title">title</string>
+    <string name="plot_synopsis">overview</string>
+    <string name="id">id</string>
+    <string name="backdrop_path">backdrop_path</string>
+    <string name="image_size">w500</string>
+    <string name="no_network_msg">Connect to internet</string>
+    <string name="parcelable_object">parcelableObject</string>
+    <string name="content">content</string>
+    <string name="author">author</string>
+    <string name="type">type</string>
+    <string name="name">name</string>
+    <string name="key">key</string>
+    <string name="review">Reviews</string>
+    <string name="favorite">Added to your Favorite list !</string>
+    <string name="unfavorite">Deleted from your Favorite list !</string>
+    <string name="sort_by">Sort By</string>
+    <string name="no_trailers">No trailers</string>
+    <string name="no_reviews">No reviews</string>
+    <string name="review_title">Reviews</string>
+    <string name="movie_details_dto_array_list">arrayList</string>
+    <string name="video_path">vnd.youtube:</string>
+    <string name="video_link">http://www.youtube.com/watch?v=</string>
+    <string name="video_error">Sorry,video not supported.</string>
+    <string name="parcelabe_movies_details_dto">parcelable</string>
+    <string name="empty_list">List is empty!</string>
+</resources>
