@@ -13,4 +13,5 @@
     <dimen name="tv_releaseDate_textSize">15sp</dimen>
     <dimen name="tv_content_margin">25dp</dimen>
     <dimen name="tv_author_textSize">20sp</dimen>
+    <dimen name="tv_padding">8dp</dimen>
 </resources>

@@ -60,9 +60,10 @@ public class TrailersListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemViewType(int position) {
         if(position == TYPE_HEADER){
             return TYPE_HEADER;
-        }else if(position == list.size() || list.size() == 0){
+        }else if(position == list.size() + 1 ){
             return TYPE_FOOTER;
-        }else {
+        }
+        else {
             return TYPE_ITEM;
         }
     }
@@ -74,11 +75,12 @@ public class TrailersListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(viewType == TYPE_HEADER){
             View viewHeader = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_header_items,parent,false);
             viewHolder = new MyViewHolderHeader(viewHeader);
-        }else if(viewType == TYPE_ITEM) {
-            View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_videos,parent,false);
+        }else if(viewType == TYPE_ITEM ) {
+            View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_videos, parent, false);
             viewHolder = new MyViewHolder(viewItem);
 
-        }else if(viewType == TYPE_FOOTER ){
+        }
+        else if(viewType == TYPE_FOOTER ){
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_review_btn,parent,false);
             viewHolder = new MyViewHolderFooter(view);
         }
@@ -93,7 +95,7 @@ public class TrailersListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             if(list.size() != 0) {
                 ImageView imageView = ((MyViewHolder) holder).imgPlay;
-                movieVideosDto = list.get(position);
+                movieVideosDto = list.get(position -1);
                 String url = "http://img.youtube.com/vi/" + movieVideosDto.getKey() + "/1.jpg";
                 Picasso.with(activity).load(url).into(imageView);
                 ((MyViewHolder) holder).textViewName.setText(movieVideosDto.getName());
@@ -118,55 +120,54 @@ public class TrailersListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(list.isEmpty()){
             return 2;
         }
-        return list.size() + 1;
+        return list.size() + 2 ;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder {
         TextView textViewName;
         ImageView imgPlay;
 
         public MyViewHolder(View item) {
             super(item);
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showTrailers();
+                }
+            });
             textViewName = (TextView) item.findViewById(R.id.textView_video);
             imgPlay = (ImageView) item.findViewById(R.id.img_play);
-            imgPlay.setOnClickListener(this);
-            textViewName.setOnClickListener(this);
+//            imgPlay.setOnClickListener(this);
+//            textViewName.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.img_play:
+        private void showTrailers() {
+            MovieVideosDto dto = list.get(getLayoutPosition() - 1);
+            if (dto.getKey() != null) {
+                if (AppUtil.isAppInstalled("com.google.android.youtube", activity)) {
 
-                case R.id.textView_video :
-                    MovieVideosDto dto = list.get(getLayoutPosition());
-                    if (dto.getKey() != null) {
-                        if (AppUtil.isAppInstalled("com.google.android.youtube", activity)) {
-
-                            try {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + dto.getKey()));
-                                activity.startActivity(intent);
-                            } catch (ActivityNotFoundException ex) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse("http://www.youtube.com/watch?v=" + dto.getKey()));
-                                activity.startActivity(intent);
-                            }
-                        } else {
-                            try {
-                                Intent intent = new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse("http://www.youtube.com/watch?v=" + dto.getKey()));
-                                activity.startActivity(intent);
-
-                            } catch (ActivityNotFoundException ex) {
-                                Toast.makeText(activity, activity.getString(R.string.video_error), Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-
-                        break;
-
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + dto.getKey()));
+                        activity.startActivity(intent);
+                    } catch (ActivityNotFoundException ex) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://www.youtube.com/watch?v=" + dto.getKey()));
+                        activity.startActivity(intent);
                     }
+                } else {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://www.youtube.com/watch?v=" + dto.getKey()));
+                        activity.startActivity(intent);
+
+                    } catch (ActivityNotFoundException ex) {
+                        Toast.makeText(activity, activity.getString(R.string.video_error), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
             }
+
         }
     }
 
