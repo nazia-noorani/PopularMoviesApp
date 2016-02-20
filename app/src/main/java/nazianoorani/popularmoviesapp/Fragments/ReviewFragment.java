@@ -84,7 +84,7 @@ public class ReviewFragment extends Fragment {
     }
     private void requestReviews () {
         // insert api key
-        String apiKey ="381c854a1a41b329208dff51e7cb34b5";
+        String apiKey ="";
         String URL = getString(R.string.base_url)+movieId+reviews+apiKey;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 URL,

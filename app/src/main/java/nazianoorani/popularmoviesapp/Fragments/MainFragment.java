@@ -174,7 +174,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         else {
 
             // append the api key here
-            String apikey = "381c854a1a41b329208dff51e7cb34b5";
+            String apikey = "";
             URL = URL + apikey;
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
                 @Override

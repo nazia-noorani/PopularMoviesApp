@@ -153,7 +153,7 @@ public class DetailsFragment extends Fragment {
             mProgressBar.setVisibility(View.GONE);
         } else {
             //  insert api key
-            String apiKey = "381c854a1a41b329208dff51e7cb34b5";
+            String apiKey = "";
             String URL = getString(R.string.base_url) + movieDetailsDto.getId() + videos + apiKey;
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -199,20 +199,5 @@ public class DetailsFragment extends Fragment {
             AppController.getInstance().addToRequestQueue(jsonObjectRequest);
         }
     }
-
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.button_reviews:
-//                Bundle bundle = new Bundle();
-//                bundle.putString("movieId", movieDetailsDto.getId());
-//                ReviewFragment reviewFragment = new ReviewFragment();
-//                reviewFragment.setArguments(bundle);
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                fragmentManager.beginTransaction().replace(R.id.frame_container, reviewFragment).addToBackStack(null).commit();
-//                break;
-//        }
-
-//    }
 
 }
