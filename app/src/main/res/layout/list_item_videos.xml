@@ -4,13 +4,13 @@
     android:layout_height="match_parent">
 
 
-    <Button
+    <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="@dimen/margin"
-        android:focusable="false"
+        android:clickable="true"
         android:background="@drawable/ic_play"
-        android:id="@+id/button_play" />
+        android:id="@+id/img_play" />
 
     <TextView
         android:layout_width="wrap_content"

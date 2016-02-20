@@ -1,7 +1,6 @@
 package nazianoorani.popularmoviesapp.adapters;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import nazianoorani.popularmoviesapp.Fragments.DetailsFragment;
 import nazianoorani.popularmoviesapp.Fragments.MainFragment;
 import nazianoorani.popularmoviesapp.R;
-import nazianoorani.popularmoviesapp.activities.DetailsActivity;
 import nazianoorani.popularmoviesapp.dto.MovieDetailsDto;
 
 /**

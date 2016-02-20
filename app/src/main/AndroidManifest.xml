@@ -25,6 +25,11 @@
 
         <activity android:name=".activities.SettingsActivity"
             android:parentActivityName=".activities.MainActivity"/>
+        <provider
+            android:authorities="nazianoorani.popularmoviesapp"
+            android:name=".database.MovieProvider"
+            android:exported="true"
+            android:enabled="true"/>
     </application>
 
 </manifest>

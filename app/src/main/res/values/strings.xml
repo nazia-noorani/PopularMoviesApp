@@ -16,6 +16,7 @@
     <string name="title">title</string>
     <string name="plot_synopsis">overview</string>
     <string name="id">id</string>
+    <string name="vote_count">vote_count</string>
     <string name="backdrop_path">backdrop_path</string>
     <string name="image_size">w500</string>
     <string name="no_network_msg">Connect to internet</string>

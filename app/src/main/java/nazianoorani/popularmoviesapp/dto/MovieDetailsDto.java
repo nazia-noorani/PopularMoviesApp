@@ -14,7 +14,28 @@ public class MovieDetailsDto implements Parcelable{
     private String releaseDate;
     private String plotSynopsis;
     private String voteAverage;
+//    private String voteCount;
 
+    public MovieDetailsDto(){}
+
+    public MovieDetailsDto(String originalTitle, String userRating, String releaseDate, String plotSynopsis
+            , String backdropPath, String id,String posterPath) {
+        this.title = originalTitle;
+        this.voteAverage = userRating;
+        this.releaseDate = releaseDate;
+        this.plotSynopsis = plotSynopsis;
+        this.backdroppath =  backdropPath;
+        this.id = id;
+        this.posterpath = posterPath;
+    }
+
+//    public String getVoteCount() {
+//        return voteCount;
+//    }
+//
+//    public void setVoteCount(String voteCount) {
+//        this.voteCount = voteCount;
+//    }
 
     public void setBackdroppath(String backdroppath) {
         this.backdroppath = backdroppath;
@@ -81,6 +102,7 @@ public class MovieDetailsDto implements Parcelable{
             movieDetailsDto.releaseDate = source.readString();
             movieDetailsDto.plotSynopsis = source.readString();
             movieDetailsDto.voteAverage = source.readString();
+//            movieDetailsDto.voteCount =source.readString();
             return movieDetailsDto;
         }
 
@@ -104,5 +126,6 @@ public class MovieDetailsDto implements Parcelable{
         dest.writeString(releaseDate);
         dest.writeString(plotSynopsis);
         dest.writeString(voteAverage);
+//        dest.writeString(voteCount);
     }
 }

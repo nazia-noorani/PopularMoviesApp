@@ -1,7 +1,14 @@
 package nazianoorani.popularmoviesapp.Fragments;
 
+
+
+import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -16,6 +23,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +43,7 @@ import nazianoorani.popularmoviesapp.R;
 import nazianoorani.popularmoviesapp.activities.SettingsActivity;
 import nazianoorani.popularmoviesapp.adapters.CardAdapter;
 import nazianoorani.popularmoviesapp.database.DatabaseHelper;
+import nazianoorani.popularmoviesapp.database.MovieContract;
 import nazianoorani.popularmoviesapp.dto.MovieDetailsDto;
 import nazianoorani.popularmoviesapp.networkmanager.AppController;
 import nazianoorani.popularmoviesapp.util.NetworkUtil;
@@ -41,8 +51,8 @@ import nazianoorani.popularmoviesapp.util.ProgressDialogUtil;
 
 /**
  * Created by nazianoorani on 04/02/16.
- */
-public class MainFragment extends Fragment {
+ **/
+public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     ArrayList<MovieDetailsDto> moviesArrayList = new ArrayList<>();
     RecyclerView recyclerView;
     CardAdapter recyclerViewAdapter;
@@ -50,7 +60,8 @@ public class MainFragment extends Fragment {
     Toolbar toolbar;
     String URL;
     private static final int RESULT_SETTINGS = 1;
-
+    private static final int LOADER_FAVOURITE_MOVIES_ID = 1001;
+    private ProgressBar mProgressBar;
 
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main,container,false);
@@ -58,10 +69,12 @@ public class MainFragment extends Fragment {
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_main);
         textViewNoItems = (TextView) view.findViewById(R.id.textView_no_items);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+
 
             if(savedInstanceState == null) {
-                Log.i("info","SAVED STATE == NULL");
-                ProgressDialogUtil.showDialog(getContext(), getString(R.string.loading));
+                Log.i("info", "SAVED STATE == NULL");
+                mProgressBar.setVisibility(ProgressBar.VISIBLE);
                 evaluateSortOrder();
             }
             else{
@@ -121,17 +134,18 @@ public class MainFragment extends Fragment {
             populateJson();
         }else if(sortOrder.equals(getString(R.string.fav_list))){
             Log.i("info", "fav list");
-            ProgressDialogUtil.hidePDialog();
-            DatabaseHelper db = new DatabaseHelper(getContext());
-            moviesArrayList = db.getFavMovieDtoList();
-
-            if(moviesArrayList.size() <= 0)
-            {
-                textViewNoItems.setText(getString(R.string.empty_list));
-                textViewNoItems.setVisibility(View.VISIBLE);
-            }
-            initRecyclerView();
-            recyclerViewAdapter.notifyDataSetChanged();
+            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+            getLoaderManager().restartLoader(LOADER_FAVOURITE_MOVIES_ID, null,this);
+//            DatabaseHelper db = new DatabaseHelper(getContext());
+//            moviesArrayList = db.getFavMovieDtoList();
+//
+//            if(moviesArrayList.size() <= 0)
+//            {
+//                textViewNoItems.setText(getString(R.string.empty_list));
+//                textViewNoItems.setVisibility(View.VISIBLE);
+//            }
+//            initRecyclerView();
+//            recyclerViewAdapter.notifyDataSetChanged();
 
         }
 
@@ -153,12 +167,14 @@ public class MainFragment extends Fragment {
     private void populateJson() {
 
         if( !NetworkUtil.isNetworkAvailable(getContext())){
+            ProgressDialogUtil.hidePDialog();
+            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
             Toast.makeText(getContext(), getString(R.string.no_network_msg), Toast.LENGTH_LONG).show();
         }
         else {
 
             // append the api key here
-            String apikey = "";
+            String apikey = "381c854a1a41b329208dff51e7cb34b5";
             URL = URL + apikey;
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -201,7 +217,7 @@ public class MainFragment extends Fragment {
                             if (jsonObject.has(getString(R.string.id))) {
                                 movieDetailsDto.setId(jsonObject.getString(getString(R.string.id)));
                             }
-                            ProgressDialogUtil.hidePDialog();
+                      mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                             moviesArrayList.add(movieDetailsDto);
                             recyclerViewAdapter.notifyDataSetChanged();
                         }
@@ -218,6 +234,38 @@ public class MainFragment extends Fragment {
             AppController.getInstance().addToRequestQueue(jsonObjectRequest);
         }
     }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(), MovieContract.FavoriteMovieEntry.CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        moviesArrayList.clear();
+         while (cursor.moveToNext()) {
+             Log.d("debug Cursor" , "can be created");
+             Log.d("TITLEEEEEE" , cursor.getString(cursor.getColumnIndex("title")));
+             Log.d("VOTE_AVGGGGGGGG" , cursor.getString(cursor.getColumnIndex("vote_average")));
+            MovieDetailsDto movie = new MovieDetailsDto(cursor.getString(
+                    cursor.getColumnIndex(MovieContract.FavoriteMovieEntry.COLUMN_TITLE)),
+                    cursor.getString(cursor.getColumnIndex(MovieContract.FavoriteMovieEntry.COLUMN_VOTE_AVERAGE)),
+                    cursor.getString(cursor.getColumnIndex(MovieContract.FavoriteMovieEntry.COLUMN_RELEASE_DATE)),
+                    cursor.getString(cursor.getColumnIndex(MovieContract.FavoriteMovieEntry.COLUMN_PLOT_SYNOPSIS)),
+                    cursor.getString(cursor.getColumnIndex(MovieContract.FavoriteMovieEntry.COLUMN_BACKDROP_PATH)),
+                    cursor.getString(cursor.getColumnIndex(MovieContract.FavoriteMovieEntry.COLUMN_ID)),
+                    cursor.getString(cursor.getColumnIndex(MovieContract.FavoriteMovieEntry.COLUMN_POSTER_PATH)));
+            moviesArrayList.add(movie);
+        }
+        cursor.close();
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
 
     /**
      * Interface implemented by MainActivity to launch movie details fragment or activity
